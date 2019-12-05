@@ -11,6 +11,7 @@ from functools import reduce
 from operator import or_
 from django.core.files import File
 from _datetime import datetime
+
 @csrf_exempt
 def request_server(request):
     print(1)
@@ -82,12 +83,9 @@ def UploadUni(request):
     
     path_img = settings.MEDIA_ROOT + '\\tmps\\' + request.FILES['IMAGE'].name
     path_file = settings.MEDIA_ROOT + '\\tmps\\' + request.FILES['FILE'].name
+
     image = handle_uploaded_file(request.FILES['IMAGE'], path_img)
     file = handle_uploaded_file(request.FILES['FILE'], path_file)
-    
-    print(path_img)
-    print(path_file)
-    print("---STEP1---")
     
     uniAR = UniAR();
     
@@ -114,37 +112,24 @@ def UploadUni(request):
     uniAR.uniFileType = UniFileType(int(uniFileType))
     
     local_file = open(path_img, 'rb')
-    print(1)
     djangofile = File(local_file)
-    print(1)
     uniAR.image.save(request.FILES['IMAGE'].name, djangofile, save=True)
     #uniAR.image = djangofile
-    print(1)
     local_file.close()
-    print(1)
     djangofile.close()
     
     local_file = open(path_file, 'rb')
-    print(1)
     djangofile = File(local_file)
-    print(1)
     uniAR.file.save(request.FILES['FILE'].name, djangofile, save=True)
     #uniAR.file = djangofile
-    
-    print(1)
     local_file.close()
-    print(1)
     djangofile.close()
     
-    print(2)
-    
     uniAR.save();
-    print(3)
     print(uniAR.id)
     
     data = {"STATUS": 0}
     
-    print(data)
     return data
 
 
@@ -276,8 +261,8 @@ def Login(request):
         name = request.POST.get('USERNAME')
         password = request.POST.get('PASSWORD')
     else:
-        name = request.POST.get('FBID')
-        password = request.POST.get('FBID')
+        name = request.POST.get('USERNAME')
+        password = request.POST.get('PASSWORD')
     user = authenticate(username=name, password=password)
     if user is not None:
         newProfile = Profile.objects.filter(user = user);
@@ -308,10 +293,16 @@ def Register(request):
             email = request.POST.get('EMAIL')
             user = User.objects.create_user(name, email, password)
         else:
-            fbid = request.POST.get('FBID')
+            print(5)
+            print(request.POST.get('USERNAME'))
+            print(request.POST.get('PASSWORD'))
+            print(request.POST.get('EMAIL'))
+            name = request.POST.get('USERNAME')
+            password = request.POST.get('PASSWORD')
             email = request.POST.get('EMAIL')
-            user = User.objects.create_user(fbid, email, fbid)
+            user = User.objects.create_user(name, email, password)
         newProfile = Profile.objects.filter(user = user); 
+        print(9)
         newProfile.update(followers = 0)
         newProfile.update(following = 0)
         newProfile.update(unisAmount = 0)

@@ -25,13 +25,16 @@ SECRET_KEY = '(xj(=8)%p1=h(f!q2&q6qgn35=tzix+cqn0a!&+f#81-b)zkok'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['207.38.94.125',
+				'http://uniars.webfactional.com/',
+				'https://uniars.webfactional.com/',
+				'uniars.webfactional.com',]
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    'django.contrib.admin',	
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
